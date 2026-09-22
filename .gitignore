@@ -1,0 +1,11 @@
+#后端忽略文件
+sky-backend/sky-take-out/target/
+sky-backend/sky-take-out/.idea/
+sky-backend/sky-take-out/*.iml
+sky-backend/sky-take-out/out/
+sky-backend/sky-take-out/application-local.yml
+sky-backend/sky-take-out/*.log
+
+#系统文件
+Thumbs.db
+.DS_Store
