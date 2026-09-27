@@ -7,7 +7,7 @@
     <select id="pageQuery" resultType="com.sky.entity.Category">
         SELECT * FROM category
         <where>
-            <if test="name != null and name !=''">name = #{name}</if>
+            <if test="name != null and name !=''">name LIKE concat('%',#{name},'%')</if>
             <if test="type != null">AND type = #{type}</if>
         </where>
         ORDER BY sort , create_time DESC
@@ -38,4 +38,15 @@
         </set>
         where id = #{id}
     </update>
+
+    <!-- 根据类型查询分类，修改分类，数据回显-->
+    <select id="list" resultType="com.sky.entity.Category">
+        SELECT *
+        FROM category
+        WHERE
+        <if test="type != null">
+            type = #{type}
+        </if>
+        ORDER BY sort , create_time DESC
+    </select>
 </mapper>
