@@ -25,4 +25,10 @@ public interface CategoryMapper {
     @Insert("INSERT INTO category(type, name, sort, status, create_time, update_time, create_user, update_user)  " +
             "VALUES (#{type}, #{name}, #{sort}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
     void insert(Category category);
+
+    /**
+     * 启用、禁用分类
+     * @param category
+     */
+    void update(Category category);
 }
