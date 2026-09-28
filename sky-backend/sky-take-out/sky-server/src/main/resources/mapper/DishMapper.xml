@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.DishMapper">
+    <!-- 菜品分页查询 -->
+    <select id="pageQuery" resultType="com.sky.vo.DishVO">
+        SELECT *,c.name categoryName FROM dish d LEFT JOIN category c ON d.category_id = c.id
+        <where>
+            <if test="name != null and name != ''">d.name LIKE concat('%',#{name},'%')</if>
+            <if test="categoryId != null">and d.category_id = #{categoryId}</if>
+            <if test="status != null">and d.status = #{status}</if>
+        </where>
+        ORDER BY d.create_time DESC
+    </select>
+
+    <!-- 根据主键删除菜品数据（批量删除） -->
+    <delete id="deleteByIds">
+        DELETE FROM dish WHERE id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 根据id动态修改菜品数据 -->
+    <update id="update">
+        UPDATE dish
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>
