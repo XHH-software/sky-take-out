@@ -46,19 +46,19 @@ public interface SetmealMapper {
     void insert(Setmeal setmea);
 
     /**
-     * 根据ID查询套装在售状态
+     * 根据ID查询套装
      * @param id
      * @return
      */
-    @Select("SELECT status FROM setmeal WHERE id = #{id}")
-    Setmeal getStatusById(Long id);
+    @Select("SELECT * FROM setmeal WHERE id = #{id}")
+    Setmeal getById(Long id);
 
     /**
      * 根据id删除套餐
      * @param id
      */
     @Delete("DELETE FROM setmeal WHERE id = #{id}")
-    void DeleteById(Long id);
+    void deleteById(Long id);
 
 
 }

@@ -88,7 +88,7 @@ public class SetmealServiceImpl implements SetmealService {
         // 判断是否为在售状态
         ids.forEach(id ->{
             // 根据id查询套餐的在售状态
-            Setmeal setmeal = setmealMapper.getStatusById(id);
+            Setmeal setmeal = setmealMapper.getById(id);
 
             if (StatusConstant.ENABLE.equals(setmeal.getStatus())) {
                 // "起售中的套餐不能删除"
@@ -99,9 +99,32 @@ public class SetmealServiceImpl implements SetmealService {
         // 删除操作
         ids.forEach(id ->{
             // 删除套餐表中的数据
-            setmealMapper.DeleteById(id);
+            setmealMapper.deleteById(id);
             // 删除套餐菜品关系表中的数据
-            setmealDishMapper.deleteBySetmealId(id);
+            setmealDishMapper.deleteById(id);
         });
+    }
+
+    /**
+     * 根据id查询套餐，用于修改页面回显数据
+     * @param id
+     * @return
+     */
+    @Override
+    public SetmealVO getByIdWithDish(Long id) {
+        // 根据套餐id查询套餐主表信息
+        Setmeal setmeal = setmealMapper.getById(id);
+        // 根据套餐id查询套餐关联的菜品集合（中间表setmeal_dish）
+        List<SetmealDish> setmealDishes  = setmealDishMapper.getBySetmealId(id);
+
+        // 创建VO对象，用于返回给前端
+        SetmealVO setmealVO = new SetmealVO();
+        // 属性拷贝：把setmeal实体的字段复制到VO
+        BeanUtils.copyProperties(setmeal,setmealVO);
+        // 将查询出来的套餐菜品集合存入VO，VO里才有这个List集合字段
+        setmealVO.setSetmealDishes(setmealDishes);
+
+        // 返回封装好的VO给Controller
+        return setmealVO;
     }
 }
