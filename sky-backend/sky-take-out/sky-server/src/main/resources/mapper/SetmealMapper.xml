@@ -17,4 +17,19 @@
         </set>
         WHERE id = #{id}
     </update>
+
+    <!-- 套餐分页查询 -->
+    <select id="page" resultType="com.sky.vo.SetmealVO">
+        SELECT s.*, c.name AS categoryName
+        FROM setmeal s
+        LEFT JOIN category c
+        ON s.category_id = c.id
+        <where>
+            <if test="name != null and name != ''">s.name LIKE concat('%',#{name},'%')</if>
+            <if test="categoryId != null">AND s.category_id = #{categoryId}</if>
+            <if test="status != null">AND s.status = #{status}</if>
+        </where>
+        ORDER BY s.create_time DESC
+    </select>
+
 </mapper>
