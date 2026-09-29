@@ -6,6 +6,7 @@ import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.exception.DeletionNotAllowedException;
@@ -153,5 +154,29 @@ public class SetmealServiceImpl implements SetmealService {
             // 重新插入套餐和菜品的关联关系，操作setmeal_dish表
             setmealDishMapper.insertBatch(setmealDishes);
         }
+    }
+
+    /**
+     * 套餐起售、停售
+     * @param id
+     * @param status
+     */
+    @Override
+    public void startOrStop(Long id, Integer status) {
+        // 套餐内如果有停售菜品，则套餐无法上架
+        // 起售套餐时，判断套餐内是否有停售菜品，有停售菜品提示"套餐内包含未启售菜品，无法启售"
+        if (StatusConstant.ENABLE.equals(status)) {
+            // 根据套餐id查询菜品
+            List<Dish> dishList = dishMapper.getBySetmealId(id);
+            if (dishList != null && !dishList.isEmpty()) {
+                dishList.forEach(s -> {
+                    if (StatusConstant.DISABLE.equals(s.getStatus())) {
+                        throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                    }
+                });
+            }
+        }
+        Setmeal setmeal = Setmeal.builder().id(id).status(status).build();
+        setmealMapper.update(setmeal);
     }
 }
