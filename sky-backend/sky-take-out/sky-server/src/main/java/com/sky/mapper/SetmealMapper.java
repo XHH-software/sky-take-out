@@ -7,6 +7,7 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.enumeration.OperationType;
 import com.sky.vo.SetmealVO;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -43,4 +44,21 @@ public interface SetmealMapper {
      */
     @AutoFill(OperationType.INSERT)
     void insert(Setmeal setmea);
+
+    /**
+     * 根据ID查询套装在售状态
+     * @param id
+     * @return
+     */
+    @Select("SELECT status FROM setmeal WHERE id = #{id}")
+    Setmeal getStatusById(Long id);
+
+    /**
+     * 根据id删除套餐
+     * @param id
+     */
+    @Delete("DELETE FROM setmeal WHERE id = #{id}")
+    void DeleteById(Long id);
+
+
 }
