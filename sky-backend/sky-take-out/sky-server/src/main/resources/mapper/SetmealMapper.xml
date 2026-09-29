@@ -32,4 +32,9 @@
         ORDER BY s.create_time DESC
     </select>
 
+    <!-- 新增套餐，基础数据 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO setmeal(category_id, name, price, status, description, image, create_time, update_time, create_user, update_user)
+        VALUES (#{categoryId},#{name},#{price},#{status},#{description},#{image},#{createTime},#{updateTime},#{createUser},#{updateUser})
+    </insert>
 </mapper>

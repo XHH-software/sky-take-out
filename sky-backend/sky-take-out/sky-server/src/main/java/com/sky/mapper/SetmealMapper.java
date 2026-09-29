@@ -2,6 +2,7 @@ package com.sky.mapper;
 
 import com.github.pagehelper.Page;
 import com.sky.annotation.AutoFill;
+import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.enumeration.OperationType;
@@ -35,4 +36,11 @@ public interface SetmealMapper {
      * @return
      */
     Page<SetmealVO> page(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    /**
+     * 新增套餐，基础数据
+     * @param
+     */
+    @AutoFill(OperationType.INSERT)
+    void insert(Setmeal setmea);
 }
