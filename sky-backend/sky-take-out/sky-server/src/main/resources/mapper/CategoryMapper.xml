@@ -43,10 +43,11 @@
     <select id="list" resultType="com.sky.entity.Category">
         SELECT *
         FROM category
-        WHERE
-        <if test="type != null">
-            type = #{type}
-        </if>
+        <where>
+            <if test="type != null">
+                type = #{type}
+            </if>
+        </where>
         ORDER BY sort , create_time DESC
     </select>
 </mapper>
