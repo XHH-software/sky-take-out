@@ -4,6 +4,9 @@ import com.sky.entity.AddressBook;
 import org.apache.ibatis.annotations.*;
 import java.util.List;
 
+/**
+ * 地址簿表
+ */
 @Mapper
 public interface AddressBookMapper {
 
