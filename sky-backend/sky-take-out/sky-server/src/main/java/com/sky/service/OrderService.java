@@ -5,6 +5,7 @@ import com.sky.dto.OrdersSubmitDTO;
 import com.sky.result.PageResult;
 import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.vo.OrderVO;
 
 public interface OrderService {
     /**
@@ -33,4 +34,10 @@ public interface OrderService {
      * @param status 订单状态  1待付款 2待接单 3已接单 4派送中 5已完成 6已取消
      */
     PageResult historyOrders(int pageNum, int pageSize, Integer status);
+
+    /**
+     * 查询订单详情
+     * @param id 订单id
+     */
+    OrderVO details(Integer id);
 }
