@@ -7,7 +7,7 @@
         INSERT INTO order_detail(name, image, order_id, dish_id, setmeal_id, dish_flavor, number, amount)
         VALUES
         <foreach collection="orderDetails" separator="," item="od">
-            (#{od.name},#{od.image},#{od.orderId},#{od.dishId},#{od.setmealId},#{od.dishFlavor},#{od.number},#{od.amout})
+            (#{od.name},#{od.image},#{od.orderId},#{od.dishId},#{od.setmealId},#{od.dishFlavor},#{od.number},#{od.amount})
         </foreach>
     </insert>
 </mapper>

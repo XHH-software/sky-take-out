@@ -14,6 +14,5 @@ public interface OrderDetailMapper {
      * 向订单明细表 批量 插入n条数据
      * @param orderDetails
      */
-    static void inserBatch(List<OrderDetail> orderDetails) {
-    }
+    void inserBatch(List<OrderDetail> orderDetails);
 }
