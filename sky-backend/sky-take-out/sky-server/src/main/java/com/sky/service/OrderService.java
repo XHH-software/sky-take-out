@@ -40,4 +40,10 @@ public interface OrderService {
      * @param id 订单id
      */
     OrderVO details(Integer id);
+
+    /**
+     * 取消订单
+     * @param id 订单id
+     */
+    void userCancelById(Integer id) throws Exception;
 }
