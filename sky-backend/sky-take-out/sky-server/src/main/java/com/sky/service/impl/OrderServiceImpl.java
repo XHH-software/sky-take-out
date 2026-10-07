@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -207,7 +208,7 @@ public class OrderServiceImpl implements OrderService {
      * @param id 订单id
      */
     @Override
-    public OrderVO details(Integer id) {
+    public OrderVO details(Long id) {
 
         Orders orders = orderMapper.getById(id);
 
@@ -226,7 +227,7 @@ public class OrderServiceImpl implements OrderService {
      * @param id 订单id
      */
     @Override
-    public void userCancelById(Integer id) throws Exception {
+    public void userCancelById(Long id) throws Exception {
 
         Orders ordersDB = orderMapper.getById(id);  // 根据订单id查询订单
 
@@ -265,5 +266,41 @@ public class OrderServiceImpl implements OrderService {
         orders.setCancelTime(LocalDateTime.now());
         // 更新订单
         orderMapper.update(orders);
+    }
+
+    /**
+     * 再来一单
+     * @param id 订单id
+     */
+    @Override
+    public void repetition(Long id) {
+
+        // 根据订单id查询当前订单详情
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(id);
+
+        // 将订单详情对象转换为购物车对象
+        /*List<ShoppingCart> shoppingCartList = new ArrayList<>();
+        for (OrderDetail orderDetail : orderDetailList) {
+            ShoppingCart shoppingCart = new ShoppingCart();
+            // 将原订单详情里面的菜品信息重新复制到购物车对象中，拷贝时跳过 `id` 字段
+            BeanUtils.copyProperties(orderDetail, shoppingCart,"id");
+            shoppingCart.setUserId(BaseContext.getCurrentId());
+            shoppingCart.setCreateTime(LocalDateTime.now());
+            shoppingCartList.add(shoppingCart);
+        }*/
+
+        // 将订单详情对象转换为购物车对象，使用stream流，简化 for 循环
+        List<ShoppingCart> shoppingCartList = orderDetailList.stream()  // 1. 获取流
+                .map(orderDetail -> {  // 2.中间操作：映射转换 OrderDetail → ShoppingCart
+                    ShoppingCart shoppingCart = new ShoppingCart();
+                    // 拷贝时跳过 `id` 字段
+                    BeanUtils.copyProperties(orderDetail, shoppingCart, "id");
+                    shoppingCart.setUserId(BaseContext.getCurrentId());
+                    shoppingCart.setCreateTime(LocalDateTime.now());
+                    return shoppingCart;
+                }).collect(Collectors.toList());  // 3.终止操作：收集成List
+
+        // 将购物车对象批量添加到数据库
+        shoppingCartMapper.insertBatch(shoppingCartList);
     }
 }

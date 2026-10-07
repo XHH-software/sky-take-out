@@ -39,11 +39,17 @@ public interface OrderService {
      * 查询订单详情
      * @param id 订单id
      */
-    OrderVO details(Integer id);
+    OrderVO details(Long id);
 
     /**
      * 取消订单
      * @param id 订单id
      */
-    void userCancelById(Integer id) throws Exception;
+    void userCancelById(Long id) throws Exception;
+
+    /**
+     * 再来一单
+     * @param id 订单id
+     */
+    void repetition(Long id);
 }
